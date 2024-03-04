@@ -1,7 +1,6 @@
 //Retrieve weather data from API
 //data from the external API and return it
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class WeatherAppGui extends JFrame {
     private JSONObject weatherData;
@@ -38,7 +39,7 @@ public class WeatherAppGui extends JFrame {
 
 
 
-        JLabel weatherConditionImage = new JLabel(loadImage("src/assets/cloudy.png"));
+        JLabel weatherConditionImage = new JLabel(loadImage("cloudy.png"));
         weatherConditionImage.setBounds(0, 125, 450, 217);
         add(weatherConditionImage);
 
@@ -54,7 +55,7 @@ public class WeatherAppGui extends JFrame {
         weatherConditionDesc.setHorizontalAlignment(SwingConstants.CENTER);
         add(weatherConditionDesc);
 
-        JLabel humidityImage = new JLabel(loadImage("src/assets/humidity.png"));
+        JLabel humidityImage = new JLabel(loadImage("humidity.png"));
         humidityImage.setBounds(15, 500, 74, 66 );
         add(humidityImage);
 
@@ -63,7 +64,7 @@ public class WeatherAppGui extends JFrame {
         humidityText.setFont(new Font("Dialog", Font.PLAIN, 16));
         add(humidityText);
 
-        JLabel windspeedImage = new JLabel(loadImage("src/assets/windspeed.png"));
+        JLabel windspeedImage = new JLabel(loadImage("windspeed.png"));
         windspeedImage.setBounds(220, 500, 74, 66);
         add(windspeedImage);
 
@@ -72,7 +73,7 @@ public class WeatherAppGui extends JFrame {
         windspeedText.setFont(new Font("Dialog", Font.PLAIN, 16));
         add(windspeedText);
 
-        JButton searchButton = new JButton(loadImage("src/assets/search.png"));
+        JButton searchButton = new JButton(loadImage("search.png"));
 
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         searchButton.setBounds(375, 13, 47, 45);
@@ -90,16 +91,16 @@ public class WeatherAppGui extends JFrame {
 
                switch(weatherCondition) {
                    case "Clear":
-                       weatherConditionImage.setIcon(loadImage("src/assets/clear.png"));
+                       weatherConditionImage.setIcon(loadImage("clear.png"));
                        break;
                    case "Cloudy":
-                       weatherConditionImage.setIcon(loadImage("src/assets/cloudy.png"));
+                       weatherConditionImage.setIcon(loadImage("cloudy.png"));
                        break;
                    case "Rain":
-                       weatherConditionImage.setIcon(loadImage("src/assets/rain.png"));
+                       weatherConditionImage.setIcon(loadImage("rain.png"));
                        break;
                    case "Snow":
-                       weatherConditionImage.setIcon(loadImage("src/assets/snow.png"));
+                       weatherConditionImage.setIcon(loadImage("snow.png"));
                        break;
                }
 
@@ -111,11 +112,11 @@ public class WeatherAppGui extends JFrame {
 
                 Long humidity = (Long) weatherData.get("humidity");
 
-                humidityText.setText(String.valueOf("<html><b>Humidity</b> " + humidity + "%</html>"));
+                humidityText.setText("<html><b>Humidity</b> " + humidity + "%</html>");
 
                 Double windspeed = (Double) weatherData.get("windspeed");
 
-                windspeedText.setText(String.valueOf("<html><b>Windspeed</b> " + windspeed + "mph</html>"));
+                windspeedText.setText("<html><b>Windspeed</b> " + windspeed + "mph</html>");
 
 
             }
@@ -125,10 +126,8 @@ public class WeatherAppGui extends JFrame {
 
     private ImageIcon loadImage(String resourcePath) {
         try {
-            BufferedImage image = ImageIO.read(new File(resourcePath));
-
-            return new ImageIcon(image);
-        } catch (IOException e) {
+            return new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(resourcePath)));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
