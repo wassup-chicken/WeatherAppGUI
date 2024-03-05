@@ -9,15 +9,31 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import java.io.InputStream;
+import java.util.Properties;
+
+
 public class WeatherApp {
 
     public static JSONObject getWeatherData(String locationName) {
-        locationName = locationName.replaceAll(" ", "+");
 
-        final String API_KEY = System.getenv("API_KEY");
+        locationName = locationName.replaceAll(" ", "+");
+        String apiKey = "";
+
+        Properties properties = new Properties();
+        try (InputStream input = WeatherApp.class.getResourceAsStream("config.properties")) {
+            if (input == null) {
+                System.err.println("Unable to locate config.properties");
+                System.exit(1);
+            }
+            properties.load(input);
+            apiKey = properties.getProperty("API_KEY");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //build API URL with location param
-        String urlString = "http://api.weatherapi.com/v1/current.json?key=" + API_KEY + "&q=" + locationName + "&aqi=no";
+        String urlString = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + locationName + "&aqi=no";
 
         try {
             HttpURLConnection connection = fetchApiResponse(urlString);
